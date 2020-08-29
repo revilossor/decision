@@ -1,11 +1,15 @@
-import { DataSet } from './DataSet'
+import { DataSet } from './DataSet';
 
 export class DecisionTree {
-  private constructor(private data: DataSet) {}
+  private data:DataSet
 
-  public static fromFile(filepath: string): DecisionTree {
+  private constructor (data: DataSet) {
+    this.data = data;
+  }
+
+  public static fromFile (filepath: string): DecisionTree {
     return new DecisionTree(
-      DataSet.fromFile(filepath)
-    )
+      DataSet.fromFilePath(filepath)
+    );
   }
 }

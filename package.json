@@ -46,6 +46,6 @@
     }
   },
   "lint-staged": {
-    "*.{ts}": "semistandard --fix"
+    "*.ts": "semistandard --fix"
   }
 }
