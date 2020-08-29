@@ -1,5 +1,5 @@
-import { DecisionTree } from './decision-tree'
+import { DecisionTree } from './decision-tree';
 
-const tree = DecisionTree.fromFile('./data/playtennis.csv')
+const tree = DecisionTree.fromFilePath('./data/playtennis.csv', { classAttribute: 'Decision' });
 
-console.dir({ tree })
+console.dir({ tree });

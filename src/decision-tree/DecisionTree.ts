@@ -1,15 +1,20 @@
 import { DataSet } from './DataSet';
 
-export class DecisionTree {
-  private data:DataSet
+export interface DecisionTreeParams {
+  classAttribute: string
+}
 
-  private constructor (data: DataSet) {
-    this.data = data;
+export class DecisionTree {
+  private constructor (private data: DataSet, private params: DecisionTreeParams) {
+    if (!data.attributes.includes(params.classAttribute)) {
+      throw Error(`expected the class attribute '${params.classAttribute}' to be in the data`);
+    }
   }
 
-  public static fromFile (filepath: string): DecisionTree {
+  public static fromFilePath (filepath: string, params: DecisionTreeParams): DecisionTree {
     return new DecisionTree(
-      DataSet.fromFilePath(filepath)
+      DataSet.fromFilePath(filepath),
+      params
     );
   }
 }
