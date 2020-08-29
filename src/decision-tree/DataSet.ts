@@ -7,6 +7,22 @@ export class DataSet {
     this.records = records;
   }
 
+  public getDistinctValues (attribute: string): string[] {
+    // TODO get values for attribute ( ignore case )
+    return [];
+  }
+
+  public getProbability (attribute: string, value: string): number {
+    // TODO get probability of attribute with a value in a set - split out?
+    // TODO return p(I) . log2p(I)
+    return 0;
+  }
+
+  public getEntropy (attribute: string): number {
+    // TODO entropy - prob for each one, subbed. some sign flipping?
+    return 0;
+  }
+
   public getAttributeIndex (attribute:string): number {
     const index = this.attributes.indexOf(attribute);
     if (index < 0) {
