@@ -2,14 +2,17 @@ import { DataSetLoader } from './DataSetLoader';
 
 export class DataSet {
   public records: string[][]
+  public attributes: string[]
 
-  constructor (public attributes: string[], ...records: string[][]) {
-    this.records = records;
+  constructor (attributes: string[], ...records: string[][]) {
+    const lower = (attribute: string) => attribute.toLowerCase();
+    this.attributes = attributes.map(lower);
+    this.records = records.map(record => record.map(lower));
   }
 
   public getDistinctValues (attribute: string): string[] {
-    // TODO get values for attribute ( ignore case )
-    return [];
+    const index = this.getAttributeIndex(attribute);
+    return [...new Set<string>(this.records.map(record => record[index]))];
   }
 
   public getProbability (attribute: string, value: string): number {
@@ -24,9 +27,10 @@ export class DataSet {
   }
 
   public getAttributeIndex (attribute:string): number {
-    const index = this.attributes.indexOf(attribute);
+    const key = attribute.toLowerCase();
+    const index = this.attributes.indexOf(key);
     if (index < 0) {
-      throw Error(`expected DataSet to contain attribute "${attribute}"`);
+      throw Error(`expected DataSet to contain attribute "${key}"`);
     }
     return index;
   }
