@@ -10,6 +10,15 @@ export class DataSet {
     this.records = records.map(record => record.map(lower));
   }
 
+  public getAttributeIndex (attribute:string): number {
+    const key = attribute.toLowerCase();
+    const index = this.attributes.indexOf(key);
+    if (index < 0) {
+      throw Error(`expected DataSet to contain attribute "${key}"`);
+    }
+    return index;
+  }
+
   public getDistinctValues (attribute: string): string[] {
     const index = this.getAttributeIndex(attribute);
     return [...new Set<string>(this.records.map(record => record[index]))];
@@ -25,23 +34,15 @@ export class DataSet {
   }
 
   public getProbability (attribute: string, value: string): number {
-    // TODO get probability of attribute with a value in a set - split out?
-    // TODO return p(I) . log2p(I)
-    return 0;
+    const p = this.getOccurrences(attribute, value) / this.records.length;
+    return p * Math.log2(p);
   }
 
   public getEntropy (attribute: string): number {
-    // TODO entropy - prob for each one, subbed. some sign flipping?
-    return 0;
-  }
-
-  public getAttributeIndex (attribute:string): number {
-    const key = attribute.toLowerCase();
-    const index = this.attributes.indexOf(key);
-    if (index < 0) {
-      throw Error(`expected DataSet to contain attribute "${key}"`);
-    }
-    return index;
+    const values = this.getDistinctValues(attribute);
+    return values.reduce((entropy, value) => {
+      return entropy - this.getProbability(attribute, value);
+    }, 0);
   }
 
   public static fromFilePath (filepath: string): DataSet {

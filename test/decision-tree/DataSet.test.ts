@@ -60,6 +60,25 @@ describe('Given a DataSet instance', () => {
       expect(instance.getOccurrences('decision', 'no')).toBe(1);
     });
   });
+
+  describe('When I get the probablilty of an attribute value', () => {
+    it('Then the correct values are returned', () => {
+      expect(instance.getProbability('outlook', 'sunny')).toBe(-0.5);
+      expect(instance.getProbability('outlook', 'rainy')).toBe(-0.5);
+      expect(instance.getProbability('wind', 'low')).toBe(-0.5);
+      expect(instance.getProbability('wind', 'high')).toBe(-0.5);
+      expect(instance.getProbability('decision', 'yes')).toBe(-0.31127812445913283);
+      expect(instance.getProbability('decision', 'no')).toBe(-0.5);
+    });
+  });
+
+  describe('When I get the entropy of an attribute', () => {
+    it('Then the correct values are returned', () => {
+      expect(instance.getEntropy('outlook')).toBe(1);
+      expect(instance.getEntropy('wind')).toBe(1);
+      expect(instance.getEntropy('decision')).toBe(0.8112781244591328);
+    });
+  });
 });
 
 describe('When I get a DataSet instance from a file path', () => {
