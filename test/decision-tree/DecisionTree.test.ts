@@ -7,7 +7,10 @@ describe('When I get a DecisionTree instance from a file path', () => {
         classAttribute: 'themoon'
       };
       const expected = Error(`expected the class attribute '${params.classAttribute}' to be in the data`);
-      expect(() => DecisionTree.fromFilePath('./test/fixtures/playtennis.csv', params)).toThrow(expected);
+      expect(() => DecisionTree.fromFilePath(
+        './test/fixtures/playtennis.csv',
+        params
+      )).toThrow(expected);
     });
   });
 });
