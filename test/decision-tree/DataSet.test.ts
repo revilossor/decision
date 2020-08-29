@@ -48,15 +48,16 @@ describe('Given a DataSet instance', () => {
         ])
       );
     });
-    it('And the case of the attribute is ignored', () => {
-      const result = instance.getDistinctValues('DeCiSiOn');
-      expect(result.length).toBe(2);
-      expect(result).toEqual(
-        expect.arrayContaining([
-          'yes',
-          'no'
-        ])
-      );
+  });
+
+  describe('When I get the occurrences of a value', () => {
+    it('Then the correct values are returned', () => {
+      expect(instance.getOccurrences('outlook', 'sunny')).toBe(2);
+      expect(instance.getOccurrences('outlook', 'rainy')).toBe(2);
+      expect(instance.getOccurrences('wind', 'low')).toBe(2);
+      expect(instance.getOccurrences('wind', 'high')).toBe(2);
+      expect(instance.getOccurrences('decision', 'yes')).toBe(3);
+      expect(instance.getOccurrences('decision', 'no')).toBe(1);
     });
   });
 });

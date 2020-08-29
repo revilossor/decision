@@ -15,6 +15,15 @@ export class DataSet {
     return [...new Set<string>(this.records.map(record => record[index]))];
   }
 
+  public getOccurrences (attribute:string, value: string): number {
+    const index = this.getAttributeIndex(attribute);
+    return this.records.reduce((count, record) => {
+      return record[index] === value
+        ? ++count
+        : count;
+    }, 0);
+  }
+
   public getProbability (attribute: string, value: string): number {
     // TODO get probability of attribute with a value in a set - split out?
     // TODO return p(I) . log2p(I)
