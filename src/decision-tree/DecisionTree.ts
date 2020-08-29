@@ -9,7 +9,7 @@ export class DecisionTree {
     if (!data.attributes.includes(params.classAttribute)) {
       throw Error(`expected the class attribute '${params.classAttribute}' to be in the data`);
     }
-    // TODO calculate the entropy for the data basded on classAttribute
+    // TODO calculate the entropy for the data basded on classAttribute...
   }
 
   public static fromFilePath (filepath: string, params: DecisionTreeParams): DecisionTree {
