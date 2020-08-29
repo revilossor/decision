@@ -10,7 +10,7 @@ export class DataSet {
     this.records = records.map(record => record.map(lower));
   }
 
-  public getAttributeIndex (attribute:string): number {
+  private getAttributeIndex (attribute:string): number {
     const key = attribute.toLowerCase();
     const index = this.attributes.indexOf(key);
     if (index < 0) {
@@ -19,12 +19,12 @@ export class DataSet {
     return index;
   }
 
-  public getDistinctValues (attribute: string): string[] {
+  private getDistinctValues (attribute: string): string[] {
     const index = this.getAttributeIndex(attribute);
     return [...new Set<string>(this.records.map(record => record[index]))];
   }
 
-  public getOccurrences (attribute:string, value: string): number {
+  private getOccurrences (attribute:string, value: string): number {
     const index = this.getAttributeIndex(attribute);
     return this.records.reduce((count, record) => {
       return record[index] === value
@@ -33,7 +33,7 @@ export class DataSet {
     }, 0);
   }
 
-  public getProbability (attribute: string, value: string): number {
+  private getProbability (attribute: string, value: string): number {
     const p = this.getOccurrences(attribute, value) / this.records.length;
     return p * Math.log2(p);
   }
