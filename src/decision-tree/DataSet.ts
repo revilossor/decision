@@ -17,7 +17,6 @@ export class DataSet {
   }
 
   // TODO data file load/parse class...?
-
   private static load (filepath: string): Buffer {
     try {
       return fs.readFileSync(path.resolve(filepath));
