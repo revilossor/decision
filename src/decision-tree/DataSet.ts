@@ -14,6 +14,11 @@ export class DataSet {
     return this.attributes.includes(attribute.toLowerCase());
   }
 
+  public subset (attribute: string, value: string): DataSet {
+    // TODO return new instance with only records with attribute === value
+    return this;
+  }
+
   private getAttributeIndex (attribute:string): number {
     const key = attribute.toLowerCase();
     const index = this.attributes.indexOf(key);
@@ -43,21 +48,24 @@ export class DataSet {
   }
 
   public getEntropy (attribute: string): number {
-    const values = this.getDistinctValues(attribute); // this works on index?
+    const values = this.getDistinctValues(attribute);
     return values.reduce((entropy, value) => {
-      return entropy - this.getProbability(attribute, value); // this works on index?
+      return entropy - this.getProbability(attribute, value);
     }, 0);
   }
 
-  public getInformationGain (attribute: string): number {
-    // Gain(Decision, Wind) =
-    //    Entropy(Decision) –
-    //    [ p(Decision|Wind=Weak) . Entropy(Decision|Wind=Weak) ] –
-    //    [ p(Decision|Wind=Strong) . Entropy(Decision|Wind=Strong) ]
-    // = 0.940 – [ (8/14) . 0.811 ] – [ (6/14). 1]
-    // = 0.048
-    return 0;
-  }
+  // public getInformationGain (to: string, of: string): number {
+  //   const classAttributeEntropy = this.getEntropy(to)
+  //
+  //
+  //   // Gain(Decision, Wind) =
+  //   //    Entropy(Decision) –
+  //   //    [ p(Decision|Wind=Weak) . Entropy(Decision|Wind=Weak) ] –
+  //   //    [ p(Decision|Wind=Strong) . Entropy(Decision|Wind=Strong) ]
+  //   // = 0.940 – [ (8/14) . 0.811 ] – [ (6/14). 1]
+  //   // = 0.048
+  //   return 0;
+  // }
 
   public static fromFilePath (filepath: string): DataSet {
     const [attributes, ...records] = DataSetLoader.load(filepath);

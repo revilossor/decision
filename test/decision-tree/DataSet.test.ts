@@ -3,30 +3,66 @@ import { DataSet } from '../../src/decision-tree/DataSet';
 describe('Given a DataSet instance', () => {
   let instance:DataSet;
 
-  const attributes = ['pure', 'impure', 'almost'];
+  const attributes = ['pure', 'impure', 'almost', 'decision'];
   const records = [
-    ['a', 'a', 'a'],
-    ['a', 'a', 'a'],
-    ['a', 'a', 'a'],
-    ['a', 'a', 'a'],
-    ['a', 'a', 'a'],
-    ['a', 'a', 'a'],
-    ['a', 'a', 'a'],
-    ['a', 'b', 'a'],
-    ['a', 'b', 'a'],
-    ['a', 'b', 'b'],
-    ['a', 'b', 'b'],
-    ['a', 'b', 'b'],
-    ['a', 'b', 'b'],
-    ['a', 'b', 'b']
+    ['a', 'a', 'a', 'yes'],
+    ['a', 'a', 'a', 'no'],
+    ['a', 'a', 'a', 'yes'],
+    ['a', 'a', 'a', 'no'],
+    ['a', 'a', 'a', 'yes'],
+    ['a', 'a', 'a', 'no'],
+    ['a', 'a', 'a', 'yes'],
+    ['a', 'b', 'a', 'no'],
+    ['a', 'b', 'a', 'yes'],
+    ['a', 'b', 'b', 'no'],
+    ['a', 'b', 'b', 'yes'],
+    ['a', 'b', 'b', 'no'],
+    ['a', 'b', 'b', 'yes'],
+    ['a', 'b', 'b', 'no']
   ];
 
   beforeEach(() => {
     instance = new DataSet(attributes, ...records);
   });
 
+  describe('When I check if the instance has an attribute', () => {
+    it('Then the correct result is returned', () => {
+      expect(instance.has('pure')).toBe(true);
+      expect(instance.has('themoon')).toBe(false);
+    });
+    it('And the case is ignored', () => {
+      expect(instance.has('PURE')).toBe(true);
+      expect(instance.has('THEMOON')).toBe(false);
+    });
+  });
+
+  describe('When I get a subset of the data', () => {
+    // TODO returns correct thing
+    // TODO if no attribute
+    // TODO if no value
+  });
+
+  // TODO
+  // describe.only('When I get the information gain for an attribute in relation to another attribute', () => {
+  //   it('Then the correct value is returned', () => {
+  //     expect(instance.getInformationGain('pure', 'pure')).toBe(0);
+  //     expect(instance.getInformationGain('pure', 'impure')).toBe(1);
+  //     expect(instance.getInformationGain('pure', 'almost')).toBe(0.9402859586706309);
+  //   });
+  //   it('And the case of the attribute is ignored', () => {
+  //     expect(instance.getInformationGain('PuRe', 'imPure')).toBe(1);
+  //   });
+  //   describe('And the attribute is not present in the data set', () => {
+  //     it('Then an error is thrown', () => {
+  //       const attribute = 'poop';
+  //       const expected = Error(`expected DataSet to contain attribute "${attribute}"`);
+  //       expect(() => instance.getInformationGain(attribute, 'pure')).toThrow(expected);
+  //     });
+  //   });
+  // });
+
   describe('When I get the entropy of an attribute', () => {
-    it('Then the correct values are returned', () => {
+    it('Then the correct value is returned', () => {
       expect(instance.getEntropy('pure')).toBe(0);
       expect(instance.getEntropy('impure')).toBe(1);
       expect(instance.getEntropy('almost')).toBe(0.9402859586706309);
@@ -40,17 +76,6 @@ describe('Given a DataSet instance', () => {
         const expected = Error(`expected DataSet to contain attribute "${attribute}"`);
         expect(() => instance.getEntropy(attribute)).toThrow(expected);
       });
-    });
-  });
-
-  describe('When I check if the instance has an attribute', () => {
-    it('Then the correct result is returned', () => {
-      expect(instance.has('pure')).toBe(true);
-      expect(instance.has('themoon')).toBe(false);
-    });
-    it('And the case is ignored', () => {
-      expect(instance.has('PURE')).toBe(true);
-      expect(instance.has('THEMOON')).toBe(false);
     });
   });
 });
