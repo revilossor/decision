@@ -55,18 +55,14 @@ export class DataSet {
     }, 0);
   }
 
-  // public getInformationGain (to: string, of: string): number {
-  //   const classAttributeEntropy = this.getEntropy(to)
-  //
-  //
-  //   // Gain(Decision, Wind) =
-  //   //    Entropy(Decision) –
-  //   //    [ p(Decision|Wind=Weak) . Entropy(Decision|Wind=Weak) ] –
-  //   //    [ p(Decision|Wind=Strong) . Entropy(Decision|Wind=Strong) ]
-  //   // = 0.940 – [ (8/14) . 0.811 ] – [ (6/14). 1]
-  //   // = 0.048
-  //   return 0;
-  // }
+  public getInformationGain (to: string, of: string): number {
+    const values = this.getDistinctValues(of);
+    return values.reduce((gain, value) => {
+      const p = this.getOccurrences(of, value) / this.records.length;
+      const entropy = this.subset(of, value).getEntropy(to);
+      return gain - (p * entropy);
+    }, this.getEntropy(to));
+  }
 
   public static fromFilePath (filepath: string): DataSet {
     const [attributes, ...records] = DataSetLoader.load(filepath);
