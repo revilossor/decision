@@ -10,6 +10,10 @@ export class DataSet {
     this.records = records.map(record => record.map(lower));
   }
 
+  public has (attribute: string):boolean {
+    return this.attributes.includes(attribute.toLowerCase());
+  }
+
   private getAttributeIndex (attribute:string): number {
     const key = attribute.toLowerCase();
     const index = this.attributes.indexOf(key);
@@ -39,10 +43,20 @@ export class DataSet {
   }
 
   public getEntropy (attribute: string): number {
-    const values = this.getDistinctValues(attribute);
+    const values = this.getDistinctValues(attribute); // this works on index?
     return values.reduce((entropy, value) => {
-      return entropy - this.getProbability(attribute, value);
+      return entropy - this.getProbability(attribute, value); // this works on index?
     }, 0);
+  }
+
+  public getInformationGain (attribute: string): number {
+    // Gain(Decision, Wind) =
+    //    Entropy(Decision) –
+    //    [ p(Decision|Wind=Weak) . Entropy(Decision|Wind=Weak) ] –
+    //    [ p(Decision|Wind=Strong) . Entropy(Decision|Wind=Strong) ]
+    // = 0.940 – [ (8/14) . 0.811 ] – [ (6/14). 1]
+    // = 0.048
+    return 0;
   }
 
   public static fromFilePath (filepath: string): DataSet {

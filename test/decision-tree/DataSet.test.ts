@@ -1,5 +1,3 @@
-import * as path from 'path';
-
 import { DataSet } from '../../src/decision-tree/DataSet';
 
 describe('Given a DataSet instance', () => {
@@ -44,6 +42,17 @@ describe('Given a DataSet instance', () => {
       });
     });
   });
+
+  describe('When I check if the instance has an attribute', () => {
+    it('Then the correct result is returned', () => {
+      expect(instance.has('pure')).toBe(true);
+      expect(instance.has('themoon')).toBe(false);
+    });
+    it('And the case is ignored', () => {
+      expect(instance.has('PURE')).toBe(true);
+      expect(instance.has('THEMOON')).toBe(false);
+    });
+  });
 });
 
 describe('When I get a DataSet instance from a file path', () => {
@@ -78,27 +87,6 @@ describe('When I get a DataSet instance from a file path', () => {
           ['14', 'rain', 'mild', 'high', 'strong', 'no']
         ]);
       });
-    });
-    describe('And the file contents are not valid', () => {
-      describe.each([
-        ['the file is empty', 'no content', './test/fixtures/empty.csv'],
-        ['the file has no records', 'no records', './test/fixtures/norecords.csv'],
-        ['the file a content row with a missing value', 'missing attribute value', './test/fixtures/missingattributevalue.csv'],
-        ['the file a content row with an extra value', 'extra attribute value', './test/fixtures/extraattributevalue.csv']
-      ])('Because %s', (_, message, filepath) => {
-        it('Then an error is thrown', () => {
-          const expectedError = Error(`there was a problem parsing the file: ${message}`);
-          expect(() => DataSet.fromFilePath(filepath)).toThrow(expectedError);
-        });
-      });
-    });
-  });
-  describe('And there is a problem reading the file', () => {
-    it('Then an error is thrown', () => {
-      const filename = 'themoon';
-      const expectedPath = path.join(__dirname, '../../', filename);
-      const expectedError = Error(`there was a problem reading the file: ENOENT: no such file or directory, open '${expectedPath}'`);
-      expect(() => DataSet.fromFilePath('themoon')).toThrow(expectedError);
     });
   });
 });

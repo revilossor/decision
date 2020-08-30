@@ -6,10 +6,10 @@ export interface DecisionTreeParams {
 
 export class DecisionTree {
   private constructor (private data: DataSet, private params: DecisionTreeParams) {
-    if (!data.attributes.includes(params.classAttribute)) {
+    if (!data.has(params.classAttribute)) {
       throw Error(`expected the class attribute '${params.classAttribute}' to be in the data`);
     }
-    // TODO calculate the entropy for the data basded on classAttribute...
+    // TODO calculate the gain for each attribute, split, etc...
   }
 
   public static fromFilePath (filepath: string, params: DecisionTreeParams): DecisionTree {
