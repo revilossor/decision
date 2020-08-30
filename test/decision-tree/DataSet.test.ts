@@ -60,7 +60,7 @@ describe('Given a DataSet instance', () => {
         ]);
       });
     });
-    it('And the case of the attribute and the value are ignored', () => {
+    it('And the casing of the attribute value is ignored', () => {
       expect(instance.subset('IMPURE', 'B').records).toEqual([
         ['a', 'b', 'a', 'no'],
         ['a', 'b', 'a', 'yes'],
@@ -71,7 +71,6 @@ describe('Given a DataSet instance', () => {
         ['a', 'b', 'b', 'no']
       ]);
     });
-
     describe('And the attribute is not present in the data set', () => {
       it('Then an error is thrown', () => {
         const attribute = 'poop';
@@ -79,7 +78,6 @@ describe('Given a DataSet instance', () => {
         expect(() => instance.subset(attribute, 'b')).toThrow(expected);
       });
     });
-
     describe('And there are no records with the attribute value in the data set', () => {
       it('Then an empty data set is returned', () => {
         expect(instance.subset('pure', 'themoon').records).toHaveLength(0);
@@ -93,7 +91,7 @@ describe('Given a DataSet instance', () => {
       expect(instance.getInformationGain('decision', 'impure')).toBe(0.014771863965748422);
       expect(instance.getInformationGain('decision', 'almost')).toBe(0.016111606370189713);
     });
-    it('And the case of the attribute is ignored', () => {
+    it('And the casing of the attributes is ignored', () => {
       expect(instance.getInformationGain('dEciSion', 'imPure')).toBe(0.014771863965748422);
     });
     describe('And the attribute is not present in the data set', () => {
@@ -111,7 +109,7 @@ describe('Given a DataSet instance', () => {
       expect(instance.getEntropy('impure')).toBe(1);
       expect(instance.getEntropy('almost')).toBe(0.9402859586706309);
     });
-    it('And the case of the attribute is ignored', () => {
+    it('And the casing the attribute is ignored', () => {
       expect(instance.getEntropy('imPure')).toBe(1);
     });
     describe('And the attribute is not present in the data set', () => {
