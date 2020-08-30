@@ -15,8 +15,9 @@ export class DataSet {
   }
 
   public subset (attribute: string, value: string): DataSet {
-    // TODO return new instance with only records with attribute === value
-    return this;
+    const index = this.getAttributeIndex(attribute);
+    const pertinent = this.records.filter(record => record[index] === value.toLowerCase());
+    return new DataSet(this.attributes, ...pertinent);
   }
 
   private getAttributeIndex (attribute:string): number {

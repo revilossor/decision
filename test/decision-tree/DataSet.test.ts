@@ -37,9 +37,54 @@ describe('Given a DataSet instance', () => {
   });
 
   describe('When I get a subset of the data', () => {
-    // TODO returns correct thing
-    // TODO if no attribute
-    // TODO if no value
+    describe('Then the correct DataSet is returned', () => {
+      let subset:DataSet;
+      beforeEach(() => {
+        subset = instance.subset('impure', 'b');
+      });
+
+      it('With the correct records', () => {
+        expect(subset.records).toEqual([
+          ['a', 'b', 'a', 'no'],
+          ['a', 'b', 'a', 'yes'],
+          ['a', 'b', 'b', 'no'],
+          ['a', 'b', 'b', 'yes'],
+          ['a', 'b', 'b', 'no'],
+          ['a', 'b', 'b', 'yes'],
+          ['a', 'b', 'b', 'no']
+        ]);
+      });
+      it('And all attributes', () => {
+        expect(subset.attributes).toEqual([
+          'pure', 'impure', 'almost', 'decision'
+        ]);
+      });
+    });
+    it('And the case of the attribute and the value are ignored', () => {
+      expect(instance.subset('IMPURE', 'B').records).toEqual([
+        ['a', 'b', 'a', 'no'],
+        ['a', 'b', 'a', 'yes'],
+        ['a', 'b', 'b', 'no'],
+        ['a', 'b', 'b', 'yes'],
+        ['a', 'b', 'b', 'no'],
+        ['a', 'b', 'b', 'yes'],
+        ['a', 'b', 'b', 'no']
+      ]);
+    });
+
+    describe('And the attribute is not present in the data set', () => {
+      it('Then an error is thrown', () => {
+        const attribute = 'poop';
+        const expected = Error(`expected DataSet to contain attribute "${attribute}"`);
+        expect(() => instance.subset(attribute, 'b')).toThrow(expected);
+      });
+    });
+
+    describe('And there are no records with the attribute value in the data set', () => {
+      it('Then an empty data set is returned', () => {
+        expect(instance.subset('pure', 'themoon').records).toHaveLength(0);
+      });
+    });
   });
 
   // TODO
