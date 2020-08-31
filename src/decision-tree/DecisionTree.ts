@@ -1,17 +1,6 @@
 import { DataSet } from './DataSet';
 import { Node } from './Node';
 
-export class QuestionNode extends Node {
-  public constructor (public attribute:string, public value:string) {
-    super(`${attribute}==${value}`);
-  }
-}
-export class AnswerNode extends Node {
-  public constructor (public attribute:string, public value:string) {
-    super(`${attribute}=${value}`);
-  }
-}
-
 export interface DecisionTreeParams {
   classAttribute: string,
   ignoredAttributes?: string[]
@@ -19,7 +8,7 @@ export interface DecisionTreeParams {
 
 export class DecisionTree extends Node {
   private constructor (private data: DataSet, private params: DecisionTreeParams) {
-    super(`?${params.classAttribute}/${params.ignoredAttributes}`);
+    super('__root__', `?${params.classAttribute}/${params.ignoredAttributes}`);
     if (!data.has(params.classAttribute)) {
       throw Error(`expected the class attribute '${params.classAttribute}' to be in the data`);
     }
@@ -32,7 +21,7 @@ export class DecisionTree extends Node {
     const entropy = data.getEntropy(this.params.classAttribute);
     if (entropy === 0) {
       const decision = data.getDistinctValues(this.params.classAttribute).pop();
-      tree.addChild(new AnswerNode(
+      tree.addChild(new Node(
         this.params.classAttribute.toLowerCase(),
         decision
       ));
@@ -44,7 +33,7 @@ export class DecisionTree extends Node {
       const values = data.getDistinctValues(attribute);
       values.forEach(value => {
         const subset = data.subset(attribute, value);
-        const node = new QuestionNode(
+        const node = new Node(
           attribute,
           value
         );

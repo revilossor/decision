@@ -4,7 +4,7 @@ describe('Given a new Node instance', () => {
   let root: Node;
 
   beforeEach(() => {
-    root = new Node('root');
+    root = new Node('root', 'root');
   });
 
   describe('Then the node has the correct initial properties', () => {
@@ -22,7 +22,7 @@ describe('Given a new Node instance', () => {
     let result: Node;
 
     beforeEach(() => {
-      child = new Node('child');
+      child = new Node('child', 'child');
       result = root.addChild(child);
     });
 
