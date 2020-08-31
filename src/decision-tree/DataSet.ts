@@ -4,7 +4,7 @@ export class DataSet {
   public records: string[][]
   public attributes: string[]
 
-  constructor (attributes: string[], ...records: string[][]) {
+  public constructor (attributes: string[], ...records: string[][]) {
     const lower = (attribute: string) => attribute.toLowerCase();
     this.attributes = attributes.map(lower);
     this.records = records.map(record => record.map(lower));
