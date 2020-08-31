@@ -65,7 +65,7 @@ export class DataSet {
   }
 
   public getMostInformative (to: string):string {
-    const gains:number[] = this.attributes.map(
+    const gains = this.attributes.map<number>(
       this.getInformationGain.bind(this, to)
     );
     return this.attributes[Math.max(...gains)];
