@@ -23,7 +23,7 @@ describe('Given a new Node instance', () => {
     let child: Node<string>;
     let result: Node<string>;
 
-    const label = 'some edge label';
+    const label = 'some edge label with CAPITAL letters';
 
     beforeEach(() => {
       child = new Node<string>('child');
@@ -41,12 +41,25 @@ describe('Given a new Node instance', () => {
       it('And one child', () => {
         expect(root).toHaveLength(1);
       });
-      it('And one edge with the correct value', () => {
-        expect(root.edges).toEqual([label]);
+      it('And one edge with the correct lowercase value', () => {
+        expect(root.edges).toEqual([label.toLowerCase()]);
       });
     });
 
-    // describe('When I then get the ')
-    // TODO then get a child
+    it('And duplicate edge labels overwite the existing child', () => {
+      const other = new Node<string>('some other thing');
+      root.addChild(label, other);
+      expect(root).toHaveLength(1);
+      expect(root.edges).toEqual([label.toLowerCase()]);
+    });
+
+    describe('When I get a child node by its edge label', () => {
+      it('Then the correct child node is returned, ignoring case', () => {
+        expect(root.getChild(label)).toEqual(child);
+      });
+      it('And undefined is returned if there is no edge with the passed label', () => {
+        expect(root.getChild('the moon')).toBeUndefined();
+      });
+    });
   });
 });

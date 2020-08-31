@@ -6,8 +6,12 @@ export class Node<T> {
   }
 
   public addChild (label: string, child: Node<T>): Node<T> {
-    this.children.set(label, child);
+    this.children.set(label.toLowerCase(), child);
     return this;
+  }
+
+  public getChild (label: string):Node<T> | undefined {
+    return this.children.get(label.toLowerCase());
   }
 
   public get length ():number { return this.children.size; }
