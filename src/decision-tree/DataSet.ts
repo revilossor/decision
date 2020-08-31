@@ -1,6 +1,5 @@
 import { DataSetLoader } from './DataSetLoader';
-// TODO pull a load of the math stuff into testable static helper
-// TODO only need to expose subset and getMostInformative
+
 export class DataSet {
   public records: string[][]
   public attributes: string[]
