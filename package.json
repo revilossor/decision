@@ -4,7 +4,7 @@
   "description": "can we do a decision tree based qna?",
   "main": "dist/index.js",
   "bin": {
-    "decide": "bin.sh"
+    "decide": "dist/index.js"
   },
   "module": "src/index.ts",
   "directories": {

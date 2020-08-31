@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { DecisionTree } from './decision-tree';
 import getopt from 'node-getopt';
 import Enquirer from 'enquirer';
