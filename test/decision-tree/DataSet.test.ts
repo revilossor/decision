@@ -120,6 +120,12 @@ describe('Given a DataSet instance', () => {
       });
     });
   });
+
+  describe('When I get the most informative attribute', () => {
+    it('Then the correct value is returned', () => {
+      expect(instance.getMostInformative('decision')).toBe('impure');
+    });
+  });
 });
 
 describe('When I get a DataSet instance from a file path', () => {

@@ -1,5 +1,6 @@
 import { DataSetLoader } from './DataSetLoader';
-
+// TODO pull a load of the math stuff into testable static helper
+// TODO only need to expose subset and getMostInformative
 export class DataSet {
   public records: string[][]
   public attributes: string[]
@@ -62,6 +63,13 @@ export class DataSet {
       const entropy = this.subset(of, value).getEntropy(to);
       return gain - (p * entropy);
     }, this.getEntropy(to));
+  }
+
+  public getMostInformative (to: string):string {
+    const gains:number[] = this.attributes.map(
+      this.getInformationGain.bind(this, to)
+    );
+    return this.attributes[Math.max(...gains)];
   }
 
   public static fromFilePath (filepath: string): DataSet {
