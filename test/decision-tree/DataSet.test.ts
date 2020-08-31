@@ -123,7 +123,36 @@ describe('Given a DataSet instance', () => {
 
   describe('When I get the most informative attribute', () => {
     it('Then the correct value is returned', () => {
-      expect(instance.getMostInformative('decision')).toBe('impure');
+      expect(instance.getMostInformative('decision')).toBe('almost');
+    });
+  });
+});
+
+describe('Given a different DataSet, with > 2 decision classes', () => {
+  let instance:DataSet;
+
+  const attributes = ['fast', 'loud', 'artist'];
+  const records = [
+    ['true', 'true', 'one'],
+    ['true', 'false', 'two'],
+    ['false', 'false', 'three']
+  ];
+
+  beforeEach(() => {
+    instance = new DataSet(attributes, ...records);
+  });
+
+  describe('When I get the entropy of an attribute', () => {
+    it('Then the correct value is returned', () => {
+      expect(instance.getEntropy('fast')).toBe(0.9182958340544896);
+      expect(instance.getEntropy('loud')).toBe(0.9182958340544896);
+      expect(instance.getEntropy('artist')).toBe(1.584962500721156);
+    });
+  });
+
+  describe('When I get the most informative attribute', () => {
+    it('Then the correct value is returned', () => {
+      expect(instance.getMostInformative('artist')).toBe('fast');
     });
   });
 });

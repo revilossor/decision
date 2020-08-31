@@ -1,5 +1,11 @@
 import { DecisionTree } from './decision-tree';
 
-const tree = DecisionTree.fromFilePath('./data/playtennis.csv', { classAttribute: 'Decision' });
+const tree = DecisionTree.fromFilePath(
+  './data/playtennis.csv',
+  {
+    classAttribute: 'Decision',
+    ignoredAttributes: ['Day']
+  }
+);
 
-console.dir({ tree });
+console.log(JSON.stringify(tree, null, 2));

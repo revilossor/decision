@@ -29,7 +29,7 @@ export class DataSet {
     return index;
   }
 
-  private getDistinctValues (attribute: string): string[] {
+  public getDistinctValues (attribute: string): string[] {
     const index = this.getAttributeIndex(attribute);
     return [...new Set<string>(this.records.map(record => record[index]))];
   }
@@ -50,9 +50,10 @@ export class DataSet {
 
   public getEntropy (attribute: string): number {
     const values = this.getDistinctValues(attribute);
-    return values.reduce((entropy, value) => {
-      return entropy - this.getProbability(attribute, value);
+    const result = values.reduce((entropy, value) => {
+      return entropy + this.getProbability(attribute, value);
     }, 0);
+    return Math.abs(result);
   }
 
   public getInformationGain (to: string, of: string): number {
@@ -64,11 +65,16 @@ export class DataSet {
     }, this.getEntropy(to));
   }
 
-  public getMostInformative (to: string):string {
-    const gains = this.attributes.map<number>(
-      this.getInformationGain.bind(this, to)
-    );
-    return this.attributes[Math.max(...gains)];
+  public getMostInformative (to: string, ignore:string[] = []):string {
+    const lowered = ignore.map(attribute => attribute.toLowerCase());
+    const source = this.attributes
+      .filter(attribute => attribute !== to.toLowerCase())
+      .filter(attribute => !lowered.includes(attribute));
+
+    const gains = source
+      .map<number>(this.getInformationGain.bind(this, to));
+
+    return source[gains.indexOf(Math.max(...gains))];
   }
 
   public static fromFilePath (filepath: string): DataSet {
