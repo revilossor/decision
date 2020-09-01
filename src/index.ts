@@ -25,14 +25,14 @@ const tree = DecisionTree.fromFilePath(
   }
 );
 
-async function enquire (copy: string):Promise<boolean> {
+async function enquire (copy: string, values: string[]):Promise<boolean> {
   const { value } = await Enquirer.prompt({
     type: 'select',
     name: 'value',
     message: copy,
-    choices: ['yep', 'nope']
+    choices: values
   });
-  return value === 'yep';
+  return value;
 }
 
 function say (message: string) {
@@ -40,14 +40,18 @@ function say (message: string) {
 }
 
 async function askQuestion (node): Promise<void> {
-  for await (const question of node.children) {
-    if (question.attribute === `${options.decision}`.toLowerCase()) {
-      return say(`\nI think the answer is "${question.value}"`);
-    }
-    const result = await enquire(`Is the ${question.attribute} "${question.value}"?`);
-    if (result) {
-      return askQuestion(question);
-    }
+  const attribute = node.children[0].attribute;
+  if (attribute === `${options.decision}`.toLowerCase()) {
+    return say(`I think the answer is "${node.children[0].value}"`);
+  }
+  const values = node.children.map(({ value }) => value);
+  const result = await enquire(
+    `How would you describe the "${attribute}"?`,
+    [...values, 'none of the above']
+  );
+  const next = node.children.find(child => child.value === result);
+  if (next) {
+    return askQuestion(next);
   }
   return say('I dont know...');
 }
