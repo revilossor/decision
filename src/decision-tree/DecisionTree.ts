@@ -7,7 +7,7 @@ export interface DecisionTreeParams {
 }
 
 export class DecisionTree extends Node {
-  private constructor (private data: DataSet, private params: DecisionTreeParams) {
+  private constructor (public data: DataSet, public params: DecisionTreeParams) {
     super('__root__', `?${params.classAttribute}/${params.ignoredAttributes}`);
     if (!data.has(params.classAttribute)) {
       throw Error(`expected the class attribute '${params.classAttribute}' to be in the data`);

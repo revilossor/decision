@@ -3,6 +3,8 @@
 import { DecisionTree } from './decision-tree';
 import getopt from 'node-getopt';
 import Enquirer from 'enquirer';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const { options } = getopt.create([
   ['f', 'filepath=PATH', 'The path to the data set .csv'],
@@ -25,7 +27,7 @@ const tree = DecisionTree.fromFilePath(
   }
 );
 
-async function enquire (copy: string, values: string[]):Promise<boolean> {
+async function enquire (copy: string, values: string[]):Promise<string> {
   const { value } = await Enquirer.prompt({
     type: 'select',
     name: 'value',
@@ -39,13 +41,46 @@ function say (message: string) {
   console.log(message);
 }
 
+async function describeRecord (): Promise<void> {
+  say(`Okay, let me ask you some questions about the "${tree.params.classAttribute}"`);
+
+  const record = [];
+  const attributes = tree.data.attributes
+    .filter(attribute => attribute !== tree.params.classAttribute)
+    .reverse();
+
+  while (attributes.length > 0) {
+    const attribute = attributes.pop();
+    const existingValues = tree.data.getDistinctValues(attribute);
+    const result = await enquire(
+      `How would you describe its "${attribute}"?`,
+      existingValues
+    );
+    record.push(result);
+  }
+
+  const { thing } = await Enquirer.prompt({
+    type: 'input',
+    name: 'thing',
+    message: 'What would you call it?'
+  });
+
+  say('Thanks, i\'ll remember that');
+
+  const keyIndex = tree.data.attributes.indexOf(tree.params.classAttribute);
+  record.splice(keyIndex, 0, thing);
+
+  fs.appendFileSync(path.resolve(options.filepath as string), `${record}\n`);
+}
+
 async function askQuestion (node): Promise<void> {
   const attribute = node.children[0].attribute;
   if (attribute === `${options.decision}`.toLowerCase()) {
     return say(`I think the answer is "${node.children[0].value.join(' or ')}"`);
   }
   const values = node.children.map(({ value }) => value);
-  const result = await enquire(
+  let result;
+  result = await enquire(
     `How would you describe the "${attribute}"?`,
     [...values, 'none of the above']
   );
@@ -53,7 +88,16 @@ async function askQuestion (node): Promise<void> {
   if (next) {
     return askQuestion(next);
   }
-  return say('I dont know...');
+  say('I dont know...');
+  result = await enquire(
+    'Can you describe it for me please?',
+    ['Yes', 'No']
+  );
+  if (result === 'Yes') {
+    return describeRecord();
+  } else {
+    say('Okay, no worries.');
+  }
 }
 
 askQuestion(tree).then(() => {
