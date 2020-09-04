@@ -42,7 +42,7 @@ function say (message: string) {
 async function askQuestion (node): Promise<void> {
   const attribute = node.children[0].attribute;
   if (attribute === `${options.decision}`.toLowerCase()) {
-    return say(`I think the answer is "${node.children[0].value}"`);
+    return say(`I think the answer is "${node.children[0].value.join(' or ')}"`);
   }
   const values = node.children.map(({ value }) => value);
   const result = await enquire(

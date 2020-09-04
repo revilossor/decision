@@ -65,7 +65,8 @@ export class DataSet {
     }, this.getEntropy(to));
   }
 
-  public getMostInformative (to: string, ignore:string[] = []):string {
+  // NOTE returns null when no attributes get us any closer to a decision
+  public getMostInformative (to: string, ignore:string[] = []):string | null {
     const lowered = ignore.map(attribute => attribute.toLowerCase());
     const source = this.attributes
       .filter(attribute => attribute !== to.toLowerCase())
@@ -73,6 +74,10 @@ export class DataSet {
 
     const gains = source
       .map<number>(this.getInformationGain.bind(this, to));
+
+    if (gains.every(gain => gain === 0)) {
+      return null;
+    }
 
     return source[gains.indexOf(Math.max(...gains))];
   }

@@ -1,3 +1,90 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`When I get a DecisionTree instance from a file path And I choose a class attribute that is in the data And the correct tree is computed for the data set 1`] = `"{\\"attribute\\":\\"__root__\\",\\"value\\":\\"?Artist/undefined\\",\\"children\\":[{\\"attribute\\":\\"fast\\",\\"value\\":\\"true\\",\\"children\\":[{\\"attribute\\":\\"loud\\",\\"value\\":\\"true\\",\\"children\\":[{\\"attribute\\":\\"artist\\",\\"value\\":\\"motorhead\\",\\"children\\":[]}]},{\\"attribute\\":\\"loud\\",\\"value\\":\\"false\\",\\"children\\":[{\\"attribute\\":\\"artist\\",\\"value\\":\\"bela fleck\\",\\"children\\":[]}]}]},{\\"attribute\\":\\"fast\\",\\"value\\":\\"false\\",\\"children\\":[{\\"attribute\\":\\"artist\\",\\"value\\":\\"max richter\\",\\"children\\":[]}]}],\\"data\\":{\\"attributes\\":[\\"fast\\",\\"loud\\",\\"artist\\"],\\"records\\":[[\\"true\\",\\"true\\",\\"motorhead\\"],[\\"true\\",\\"false\\",\\"bela fleck\\"],[\\"false\\",\\"false\\",\\"max richter\\"]]},\\"params\\":{\\"classAttribute\\":\\"Artist\\"}}"`;
+exports[`When I get a DecisionTree instance from a file path And I choose a class attribute that is in the data And the correct tree is computed for the data set 1`] = `"{\\"attribute\\":\\"__root__\\",\\"value\\":\\"?Artist/undefined\\",\\"children\\":[{\\"attribute\\":\\"fast\\",\\"value\\":\\"true\\",\\"children\\":[{\\"attribute\\":\\"loud\\",\\"value\\":\\"true\\",\\"children\\":[{\\"attribute\\":\\"artist\\",\\"value\\":[\\"motorhead\\"],\\"children\\":[]}]},{\\"attribute\\":\\"loud\\",\\"value\\":\\"false\\",\\"children\\":[{\\"attribute\\":\\"artist\\",\\"value\\":[\\"bela fleck\\"],\\"children\\":[]}]}]},{\\"attribute\\":\\"fast\\",\\"value\\":\\"false\\",\\"children\\":[{\\"attribute\\":\\"artist\\",\\"value\\":[\\"max richter\\"],\\"children\\":[]}]}],\\"data\\":{\\"attributes\\":[\\"fast\\",\\"loud\\",\\"artist\\"],\\"records\\":[[\\"true\\",\\"true\\",\\"motorhead\\"],[\\"true\\",\\"false\\",\\"bela fleck\\"],[\\"false\\",\\"false\\",\\"max richter\\"]]},\\"params\\":{\\"classAttribute\\":\\"Artist\\"}}"`;
+
+exports[`When I get a DecisionTree instance from a file path And the data set has distinct classes with identical attributes Then the duplicates are grouped correctly 1`] = `
+DecisionTree {
+  "attribute": "__root__",
+  "children": Array [
+    Node {
+      "attribute": "one",
+      "children": Array [
+        Node {
+          "attribute": "two",
+          "children": Array [
+            Node {
+              "attribute": "target",
+              "children": Array [],
+              "value": Array [
+                "one",
+                "two",
+              ],
+            },
+          ],
+          "value": "true",
+        },
+        Node {
+          "attribute": "two",
+          "children": Array [
+            Node {
+              "attribute": "target",
+              "children": Array [],
+              "value": Array [
+                "four",
+              ],
+            },
+          ],
+          "value": "false",
+        },
+      ],
+      "value": "true",
+    },
+    Node {
+      "attribute": "one",
+      "children": Array [
+        Node {
+          "attribute": "target",
+          "children": Array [],
+          "value": Array [
+            "three",
+          ],
+        },
+      ],
+      "value": "false",
+    },
+  ],
+  "data": DataSet {
+    "attributes": Array [
+      "one",
+      "two",
+      "target",
+    ],
+    "records": Array [
+      Array [
+        "true",
+        "true",
+        "one",
+      ],
+      Array [
+        "true",
+        "true",
+        "two",
+      ],
+      Array [
+        "false",
+        "true",
+        "three",
+      ],
+      Array [
+        "true",
+        "false",
+        "four",
+      ],
+    ],
+  },
+  "params": Object {
+    "classAttribute": "target",
+  },
+  "value": "?target/undefined",
+}
+`;

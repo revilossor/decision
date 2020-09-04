@@ -16,30 +16,37 @@ export class DecisionTree extends Node {
     this.split(data, this);
   }
 
-  // TODO distinguish homogenous results with > 1 member, return the set?
   private split (data: DataSet, tree: Node) {
-    const entropy = data.getEntropy(this.params.classAttribute);
-    if (entropy === 0) {
-      const decision = data.getDistinctValues(this.params.classAttribute).pop();
+    const addLeafNode = () => {
+      const decision = [...(new Set(data.getDistinctValues(this.params.classAttribute)))];
       tree.addChild(new Node(
         this.params.classAttribute.toLowerCase(),
         decision
       ));
+    };
+
+    const entropy = data.getEntropy(this.params.classAttribute);
+    if (entropy === 0) {
+      addLeafNode();
     } else {
       const attribute = data.getMostInformative(
         this.params.classAttribute,
         this.params.ignoredAttributes
       );
-      const values = data.getDistinctValues(attribute);
-      values.forEach(value => {
-        const subset = data.subset(attribute, value);
-        const node = new Node(
-          attribute,
-          value
-        );
-        tree.addChild(node);
-        this.split(subset, node);
-      });
+      if (attribute == null) {
+        addLeafNode();
+      } else {
+        const values = data.getDistinctValues(attribute);
+        values.forEach(value => {
+          const subset = data.subset(attribute, value);
+          const node = new Node(
+            attribute,
+            value
+          );
+          tree.addChild(node);
+          this.split(subset, node);
+        });
+      }
     }
   }
 

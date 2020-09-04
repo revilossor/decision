@@ -32,4 +32,12 @@ describe('When I get a DecisionTree instance from a file path', () => {
       expect(JSON.stringify(tree)).toMatchSnapshot();
     });
   });
+  describe('And the data set has distinct classes with identical attributes', () => {
+    it('Then the duplicates are grouped correctly', () => {
+      expect(DecisionTree.fromFilePath(
+        './test/fixtures/duplicate.csv',
+        { classAttribute: 'target' }
+      )).toMatchSnapshot();
+    });
+  });
 });

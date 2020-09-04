@@ -1,7 +1,7 @@
 export class Node {
   public children: Array<Node>
 
-  public constructor (public attribute:string, public value:string) {
+  public constructor (public attribute:string, public value:string | string[]) {
     this.children = [];
   }
 
