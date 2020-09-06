@@ -55,7 +55,7 @@ async function describeRecord (): Promise<void> {
 }
 
 async function handleUnknown () :Promise<void> {
-  InteractionService.say('I dont know...');
+  InteractionService.say('I cant decide what it is...');
   const result = await InteractionService.selectPrompt(
     'Can you describe it for me please?',
     ['Yes', 'No']
