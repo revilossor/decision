@@ -38,14 +38,14 @@ async function describeRecord (): Promise<void> {
   while (attributes.length > 0) {
     const attribute = attributes.pop();
     const existingValues = tree.data.getDistinctValues(attribute);
-    const result = InteractionService.selectPrompt(
+    const result = await InteractionService.selectPrompt(
       `How would you describe its "${attribute}"?`,
       existingValues
     );
     record.push(result);
   }
 
-  const thing = InteractionService.textPrompt('What would you call it?');
+  const thing = await InteractionService.textPrompt('What would you call it?');
   InteractionService.say('Thanks, i\'ll remember that');
 
   const keyIndex = tree.data.attributes.indexOf(tree.params.classAttribute);
